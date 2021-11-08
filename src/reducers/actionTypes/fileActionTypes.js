@@ -1,0 +1,7 @@
+export const SET_COMPANY = 'SET_COMPANY'
+export const FIND_BY_COMPANY = 'FIND_BY_COMPANY'
+export const FIND_BY_SUY = 'FIND_BY_SUY'
+export const FIND_BY_CONTACT = 'FIND_BY_CONTACT'
+export const CHANGE_STATUS = 'CHANGE_STATUS'
+export const CHANGE_TYPE = 'FIND_BY_TYPE'
+export const CHANGE_PRICE = 'CHANGE_TYPE'
