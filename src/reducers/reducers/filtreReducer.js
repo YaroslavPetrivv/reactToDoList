@@ -1,4 +1,15 @@
-import {FIND_BY_COMPANY, FIND_BY_CONTACT, FIND_BY_SUY, CHANGE_STATUS, CHANGE_TYPE, CHANGE_PRICE} from "../actionTypes";
+import {
+    CHANGE_CURRENT_PAGE,
+    CHANGE_PER_PAGE,
+    CHANGE_PRICE,
+    CHANGE_STATUS,
+    CHANGE_TYPE,
+    DELETE_BY_ID,
+    FIND_BY_COMPANY,
+    FIND_BY_CONTACT,
+    FIND_BY_SUY, SET_ACTIVE_CHECK_BOX,
+    SET_TOTAL_COMPANIES
+} from "../actionTypes";
 
 const initialState = {
     findByCompany: '',
@@ -6,11 +17,16 @@ const initialState = {
     findByContact: '',
     status: 'All',
     type: 'All',
-    price: 'All'
+    price: 'All',
+    isActiveCheckBox: false,
+    idDelete: [],
+    currentPage: 1,
+    totalCompanies: 0,
+    rowPerPage: 5,
 }
 
-
 export default function filterReducer(state = initialState, action) {
+    
     switch (action.type) {
         case  FIND_BY_COMPANY: {
             return {
@@ -46,6 +62,40 @@ export default function filterReducer(state = initialState, action) {
             return {
                 ...state,
                 price: action.payload.changeOptions
+            }
+        }
+        case  DELETE_BY_ID: {
+            return {
+                ...state,
+                idDelete: [...state.idDelete, action.payload.id]
+            }
+        }
+        case  SET_ACTIVE_CHECK_BOX: {
+            return {
+                ...state,
+                isActiveCheckBox: action.payload.customInfo
+            }
+        }
+        case CHANGE_PER_PAGE : {
+            return {
+                ...state,
+                rowPerPage: action.payload.changeOptions,
+                isLoading: false,
+            }
+        }
+
+        case CHANGE_CURRENT_PAGE : {
+            return {
+                ...state,
+                currentPage: action.payload.changeOptions,
+                isLoading: false,
+            }
+        }
+        case SET_TOTAL_COMPANIES : {
+            return {
+                ...state,
+                totalCompanies: action.payload.changeOptions,
+                isLoading: false,
             }
         }
         default:

@@ -1,18 +1,49 @@
 import "./CompanyContentStyle.scss"
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteById, setCompany} from "../../../reducers/actionCreators/fileActionCreators";
+import Company from "../../../services/CompanisJson";
 
-export default function CompanyContent({urlImg,nameCompany, status, type, sku, contact: {img, name}, price, isAcvive}) {
+export default function CompanyContent({
+                                           urlImg,
+                                           nameCompany,
+                                           status,
+                                           type,
+                                           sku,
+                                           contact: {img, name},
+                                           price,
+                                           id
+                                       }) {
+    const [menuFallingOutMenuState, setMenuFallingOutMenuState] = useState(false);
+    const [checkBoxState, setCheckBoxState] = useState(false);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setCompany(Company))
+    }, [dispatch])
+
+    const store = useSelector((store) => store);
+
+    const {filterReducer} = store;
+
+    const {isActiveCheckBox} = filterReducer;
 
 
-    const [menuFallingOutMenuState, setMenuFallingOutMenuState] = useState(false)
+    const deleteItem = () => {
+        setMenuFallingOutMenuState(!menuFallingOutMenuState);
+        dispatch(deleteById(id))
+    }
 
     return (
         <div className="companyContent">
             <div className="CheckBox">
                 <div className="element-wrapper">
-                    <input type="checkbox"
+                    <input checked={checkBoxState || isActiveCheckBox}
+                           onChange={() => setCheckBoxState(!checkBoxState)}
+                           type="checkbox"
                            placeholder="Search"
-                           checked={isAcvive} className="checkbox" id="checkbox1"/>
+                           className="checkbox" id="checkbox1"/>
                     <label htmlFor="checkbox1"> </label>
                 </div>
             </div>
@@ -22,7 +53,7 @@ export default function CompanyContent({urlImg,nameCompany, status, type, sku, c
                 <p>{nameCompany}</p>
             </div>
             <div className="companyContent__status">
-                <p className={(status === 'active') ? 'active' : (status === 'pending') ? 'pending' : 'danger'}>{status}</p>
+                <p className={(status === 'Active') ? 'active' : (status === 'Pending') ? 'pending' : 'danger'}>{status}</p>
             </div>
             <div className="companyContent__type">
                 <p>{type}</p>
@@ -39,17 +70,18 @@ export default function CompanyContent({urlImg,nameCompany, status, type, sku, c
             </div>
 
             <div className="companyContent_action" onClick={() => setMenuFallingOutMenuState(!menuFallingOutMenuState)}>
+
                 <div className="dot"></div>
                 <div className="dot"></div>
                 <div className="dot"></div>
 
                 <div className={(menuFallingOutMenuState) ? "fallingOutMenu" : "fallingOutMenuHidden"}>
 
-                    <button onClick={() => setMenuFallingOutMenuState(!menuFallingOutMenuState)}>
+                    <button onClick={deleteItem}>
                         Delete
                     </button>
 
-                    <button onClick={() => setMenuFallingOutMenuState(!menuFallingOutMenuState)}>
+                    <button id={id} onClick={() => setMenuFallingOutMenuState(!menuFallingOutMenuState)}>
                         Back
                     </button>
                 </div>

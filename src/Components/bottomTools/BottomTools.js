@@ -1,36 +1,18 @@
-import {useState} from "react";
 import "./BottomToolsStyle.scss"
+import BottomTool from "./bottomTool/BottomTool";
+import {useSelector} from "react-redux";
 
-export default function BottomTools({countRow}) {
+export default function BottomTools({countCompanyPages}) {
 
-    const [stateRow, setstateRow] = useState(5);
+    const store = useSelector((store) => store);
 
+    const {filterReducer} = store;
 
-    const handleChangRow = (e) => {
-        setstateRow(e.target.value)
-    }
+    const {currentPage, rowPerPage} = filterReducer;
 
-    console.log(stateRow);
+    let pagesCount = Math.ceil(countCompanyPages / rowPerPage);
+
     return (
-        <div className="bottomTools">
-            <div className="bottomTools__pagination">
-                <button style={{backgroundImage: "url('img/arrowLeft.png')"}}></button>
-                <p>
-                    1
-                </p>
-                <p>/</p>
-                <p>6</p>
-                <button style={{backgroundImage: "url('img/arrowRight.png')"}}></button>
-            </div>
-            <div className="bottomTools__NumberPages">
-                <p>Rows per page</p>
-                <select onChange={handleChangRow} value={stateRow}
-                        style={{backgroundImage: "url('img/ShapeDown.png')"}}>
-                    {
-                        countRow.map(status => <option>{status}</option>)
-                    }
-                </select>
-            </div>
-        </div>
+        <BottomTool pagesCount={pagesCount} currentPage={currentPage} rowPerPage={rowPerPage} countRow={[5, 10, 15]}/>
     );
 }
